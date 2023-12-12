@@ -33,7 +33,7 @@ def get(tree: Tree = Depends(get_tree)) -> Tree:
 
 @router.get("/{id}/family_tree", response_model=FamilyTreeSchema)
 def get_family_tree(tree: Tree = Depends(get_tree), db: Session = Depends(get_db)) -> dict:
-    ft = TreeController.get_family_tree(db, tree.root_family)
+    ft = TreeController.get_family_tree(db, tree.root_family.father)
 
     return ft
     
