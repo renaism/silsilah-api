@@ -1,9 +1,10 @@
 from sqlalchemy import Column, DateTime, String, Uuid
 
-from app.models.base_model import BaseModel
+from app.dependencies.database import Base
+from app.models.mixins.timestamp import TimestampMixin
 
 
-class User(BaseModel):
+class User(TimestampMixin, Base):
     __tablename__ = "user"
 
     id = Column(Uuid, primary_key=True, index=True)

@@ -1,10 +1,11 @@
-from sqlalchemy import Column, Date, String, Uuid
+from sqlalchemy import Column, Date, ForeignKey, String, Uuid
 from sqlalchemy.orm import relationship
 
-from app.models.base_model import BaseModel
+from app.dependencies.database import Base
+from app.models.mixins.timestamp import TimestampMixin
 
 
-class Person(BaseModel):
+class Person(TimestampMixin, Base):
     __tablename__ = "person"
 
     id = Column(Uuid, primary_key=True, index=True)
@@ -15,6 +16,10 @@ class Person(BaseModel):
     decease_place = Column(String)
     decease_date = Column(Date)
     photo = Column(String)
-    parent_family_id = Column(Uuid)
+    parent_family_id = Column(Uuid, ForeignKey("family.id"))
 
-    parent_family = relationship("Family", foreign_keys=[parent_family_id])
+    parent_family = relationship(
+        "Family",
+        foreign_keys=[parent_family_id],
+        back_populates="children"
+    )
